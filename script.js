@@ -5,51 +5,73 @@ document.addEventListener('mousemove', function(e) {
     
     if (!noBtn || noBtn.offsetParent === null) return;
 
+    // Get button center
     const rect = noBtn.getBoundingClientRect();
     const btnCenterX = rect.left + rect.width / 2;
     const btnCenterY = rect.top + rect.height / 2;
 
-    const distance = Math.sqrt(
-        Math.pow(e.clientX - btnCenterX, 2) + 
-        Math.pow(e.clientY - btnCenterY, 2)
-    );
+    // Calculate distance
+    const deltaX = e.clientX - btnCenterX;
+    const deltaY = e.clientY - btnCenterY;
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-    if (distance < 100 && !isAnimating) {
-        moveButton();
+    // INCREASED Proximity: Now triggers at 200px (was 100px)
+    if (distance < 200 && !isAnimating) {
+        moveButtonAway(e.clientX, e.clientY);
         isAnimating = true;
-        setTimeout(() => { isAnimating = false; }, 400);
+        // Shorter lock (300ms) makes it feel more responsive
+        setTimeout(() => { isAnimating = false; }, 300);
     }
 });
 
-function moveButton() {
+function moveButtonAway(mouseX, mouseY) {
     const noBtn = document.getElementById('noBtn');
     
-    const btnWidth = noBtn.offsetWidth;
-    const btnHeight = noBtn.offsetHeight;
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight;
-
+    // Get current position (pixels)
+    // We use offsetLeft/Top to get relative to parent, which works well with absolute positioning
     let currentX = noBtn.offsetLeft;
     let currentY = noBtn.offsetTop;
 
-    const angle = Math.random() * 2 * Math.PI;
-    const jumpDistance = 150 + Math.random() * 100;
+    // Get Button Center again for calculation
+    const rect = noBtn.getBoundingClientRect();
+    const btnCenterX = rect.left + rect.width / 2;
+    const btnCenterY = rect.top + rect.height / 2;
 
-    let newX = currentX + Math.cos(angle) * jumpDistance;
-    let newY = currentY + Math.sin(angle) * jumpDistance;
+    // Calculate vector FROM mouse TO button (Repulsion)
+    let dirX = btnCenterX - mouseX;
+    let dirY = btnCenterY - mouseY;
 
-    const padding = 50;
+    // Normalize vector (length 1)
+    const length = Math.sqrt(dirX * dirX + dirY * dirY);
+    if (length === 0) { dirX = 1; dirY = 0; } // Prevent division by zero
+    else { dirX /= length; dirY /= length; }
 
+    // Move by a fixed distance (e.g., 150px)
+    const moveDistance = 150;
+    let newX = currentX + (dirX * moveDistance);
+    let newY = currentY + (dirY * moveDistance);
+
+    // STRICT BOUNDARIES
+    const padding = 100; // Increased padding to keep it well on screen
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
+
+    // Clamp X
     if (newX < padding) newX = padding;
     if (newX > windowWidth - btnWidth - padding) newX = windowWidth - btnWidth - padding;
     
+    // Clamp Y
     if (newY < padding) newY = padding;
     if (newY > windowHeight - btnHeight - padding) newY = windowHeight - btnHeight - padding;
 
+    // Apply
     noBtn.style.position = 'absolute';
     noBtn.style.left = newX + 'px';
     noBtn.style.top = newY + 'px';
     
+    // Clear margins so the smooth transition works from center
     noBtn.style.marginLeft = '0';
     noBtn.style.marginTop = '0';
 }
