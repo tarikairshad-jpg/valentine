@@ -10,16 +10,15 @@ document.addEventListener('mousemove', function(e) {
     const btnCenterX = rect.left + rect.width / 2;
     const btnCenterY = rect.top + rect.height / 2;
 
-    // Calculate distance
+    // Calculate distance to mouse
     const deltaX = e.clientX - btnCenterX;
     const deltaY = e.clientY - btnCenterY;
     const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-    // INCREASED Proximity: Now triggers at 200px (was 100px)
-    if (distance < 200 && !isAnimating) {
+    // Trigger movement if mouse is within 150px
+    if (distance < 150 && !isAnimating) {
         moveButtonAway(e.clientX, e.clientY);
         isAnimating = true;
-        // Shorter lock (300ms) makes it feel more responsive
         setTimeout(() => { isAnimating = false; }, 300);
     }
 });
@@ -27,53 +26,53 @@ document.addEventListener('mousemove', function(e) {
 function moveButtonAway(mouseX, mouseY) {
     const noBtn = document.getElementById('noBtn');
     
-    // Get current position (pixels)
-    // We use offsetLeft/Top to get relative to parent, which works well with absolute positioning
-    let currentX = noBtn.offsetLeft;
-    let currentY = noBtn.offsetTop;
+    // 1. Switch to Fixed Positioning on first move
+    // This allows us to move it anywhere on screen easily
+    if (noBtn.style.position !== 'fixed') {
+        const rect = noBtn.getBoundingClientRect();
+        noBtn.style.position = 'fixed';
+        noBtn.style.left = rect.left + 'px';
+        noBtn.style.top = rect.top + 'px';
+        // Clear margins that might interfere
+        noBtn.style.margin = '0';
+    }
 
-    // Get Button Center again for calculation
+    // 2. Calculate "Repulsion" Vector
     const rect = noBtn.getBoundingClientRect();
     const btnCenterX = rect.left + rect.width / 2;
     const btnCenterY = rect.top + rect.height / 2;
 
-    // Calculate vector FROM mouse TO button (Repulsion)
     let dirX = btnCenterX - mouseX;
     let dirY = btnCenterY - mouseY;
 
-    // Normalize vector (length 1)
+    // Normalize (make length 1)
     const length = Math.sqrt(dirX * dirX + dirY * dirY);
-    if (length === 0) { dirX = 1; dirY = 0; } // Prevent division by zero
+    if (length === 0) { dirX = 1; dirY = 0; }
     else { dirX /= length; dirY /= length; }
 
-    // Move by a fixed distance (e.g., 150px)
-    const moveDistance = 150;
-    let newX = currentX + (dirX * moveDistance);
-    let newY = currentY + (dirY * moveDistance);
+    // Move distance (jump 200px away)
+    const moveDistance = 200;
+    let newX = rect.left + (dirX * moveDistance);
+    let newY = rect.top + (dirY * moveDistance);
 
-    // STRICT BOUNDARIES
-    const padding = 100; // Increased padding to keep it well on screen
+    // 3. HARD Boundary Checks (Keep inside screen)
+    const padding = 20; // Keep 20px from edge
+    const btnWidth = rect.width;
+    const btnHeight = rect.height;
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
-    const btnWidth = noBtn.offsetWidth;
-    const btnHeight = noBtn.offsetHeight;
 
-    // Clamp X
+    // If it hits the Left/Right wall, clamp it
     if (newX < padding) newX = padding;
-    if (newX > windowWidth - btnWidth - padding) newX = windowWidth - btnWidth - padding;
+    if (newX + btnWidth > windowWidth - padding) newX = windowWidth - btnWidth - padding;
     
-    // Clamp Y
+    // If it hits Top/Bottom wall, clamp it
     if (newY < padding) newY = padding;
-    if (newY > windowHeight - btnHeight - padding) newY = windowHeight - btnHeight - padding;
+    if (newY + btnHeight > windowHeight - padding) newY = windowHeight - btnHeight - padding;
 
-    // Apply
-    noBtn.style.position = 'absolute';
+    // Apply new coordinates
     noBtn.style.left = newX + 'px';
     noBtn.style.top = newY + 'px';
-    
-    // Clear margins so the smooth transition works from center
-    noBtn.style.marginLeft = '0';
-    noBtn.style.marginTop = '0';
 }
 
 function nextPage() {
