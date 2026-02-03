@@ -8,8 +8,8 @@ document.addEventListener("mousemove", (e) => {
     const dy = rect.top + rect.height / 2 - e.clientY;
     const dist = Math.hypot(dx, dy);
 
-    // Trigger movement if close
-    if (dist < 160) {
+    // Trigger if mouse is within 200px
+    if (dist < 200) {
         // 1. Switch to fixed if not already (allows free floating)
         if (noBtn.style.position !== "fixed") {
             noBtn.style.position = "fixed";
@@ -17,12 +17,12 @@ document.addEventListener("mousemove", (e) => {
             noBtn.style.top = rect.top + "px";
         }
 
-        // 2. Move away logic (Your original math)
-        let x = rect.left + (dx / dist) * 20;
+        // 2. Move away logic
+        let x = rect.left + (dx / dist) * 20; // Move 20px away per frame
         let y = rect.top + (dy / dist) * 20;
 
-        // 3. Keep on screen
-        const pad = 10;
+        // 3. Keep on screen (Padding 20px)
+        const pad = 20;
         x = Math.max(pad, Math.min(window.innerWidth - rect.width - pad, x));
         y = Math.max(pad, Math.min(window.innerHeight - rect.height - pad, y));
 
