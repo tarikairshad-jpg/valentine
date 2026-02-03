@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Question for You ❤️</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container" id="question-screen">
+        <h1 class="header_text">Will you be my Valentine?</h1>
+        <div class="gif_container">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmo3c3l5ODh3ZGN6NHhhaDE2Mjg1djh2YzF0ZnM1eWw0H5wbm8i/LnGeRCOIY9A8I/giphy.gif" alt="Cute bear">
+        </div>
+        <div class="buttons">
+            <button class="btn" id="yesBtn" onclick="nextPage()">Yes</button>
+            <button class="btn" id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No</button>
+        </div>
+    </div>
+
+    <div class="container hidden" id="success-screen">
+        <h1 class="header_text">Yay! You made a great decision! ❤️</h1>
+        <div class="gif_container">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbXN6aG04b3lqeXl5bnlxZ3V3Y3Z5Y2k5Z3V3Y3Z5Y2k5Z3V3YyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/iCVzZwwE6QNBzBdHIh/giphy.gif" alt="Happy bear">
+        </div>
+        <p class="details">I love you!</p>
+        <div class="dinner-card">
+            <h2>📅 The Plan</h2>
+            <p><strong>Dinner at:</strong> [Insert Restaurant Name]</p>
+            <p><strong>Time:</strong> [Insert Time]</p>
+            <p><strong>Dress Code:</strong> [Optional]</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
