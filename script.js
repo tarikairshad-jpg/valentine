@@ -1,14 +1,16 @@
+window.addEventListener("load", () => {
+    const noBtn = document.getElementById("noBtn");
+    const rect = noBtn.getBoundingClientRect();
+    noBtn.style.position = "fixed";
+    noBtn.style.left = rect.left + "px";
+    noBtn.style.top = rect.top + "px";
+});
+
 document.addEventListener("mousemove", (e) => {
     const noBtn = document.getElementById("noBtn");
     if (!noBtn) return;
 
     const rect = noBtn.getBoundingClientRect();
-
-    if (noBtn.style.position !== "fixed") {
-        noBtn.style.position = "fixed";
-        noBtn.style.left = rect.left + "px";
-        noBtn.style.top = rect.top + "px";
-    }
 
     const btnX = rect.left + rect.width / 2;
     const btnY = rect.top + rect.height / 2;
@@ -19,6 +21,7 @@ document.addEventListener("mousemove", (e) => {
 
     if (distance < 180) {
         const move = 18;
+
         let newX = rect.left + (dx / distance) * move;
         let newY = rect.top + (dy / distance) * move;
 
