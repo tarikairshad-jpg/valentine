@@ -3,10 +3,10 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #ffe6e6; /* Light pink background */
+    background-color: #ffe6e6;
     font-family: 'Arial', sans-serif;
     margin: 0;
-    overflow: hidden; /* Prevents scrollbars when button moves */
+    overflow: hidden;
 }
 
 .container {
@@ -28,14 +28,17 @@ body {
     width: 300px;
     border-radius: 15px;
     margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .buttons {
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 20px;
     margin-top: 20px;
-    position: relative; /* Needed for absolute positioning of No button */
+    width: 100%;
+    height: 60px; /* Reserves space so layout doesn't jump */
 }
 
 .btn {
@@ -47,8 +50,9 @@ body {
     border: none;
     border-radius: 50px;
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: transform 0.2s, background-color 0.2s;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    z-index: 10;
 }
 
 .btn:hover {
@@ -56,13 +60,18 @@ body {
     background-color: #ff3333;
 }
 
-/* Specific style for the No button to allow it to move freely */
+/* MOVEMENT MAGIC: This makes the No button glide smoothly */
 #noBtn {
     position: absolute; 
-    left: 150px; /* Initial position next to Yes */
+    left: 55%; /* Start slightly to the right */
+    transition: top 0.4s ease, left 0.4s ease; 
 }
 
-/* Success Screen Styling */
+#yesBtn {
+    position: absolute;
+    right: 55%; /* Start slightly to the left */
+}
+
 .details {
     font-size: 24px;
     color: #ff4d4d;
@@ -71,16 +80,25 @@ body {
 
 .dinner-card {
     background: white;
-    padding: 20px;
+    padding: 25px;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     margin-top: 20px;
     display: inline-block;
     color: #555;
     text-align: left;
+    min-width: 300px;
 }
 
 .dinner-card h2 {
     color: #ff4d4d;
     margin-top: 0;
+    border-bottom: 2px solid #ffe6e6;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.dinner-card p {
+    margin: 10px 0;
+    font-size: 18px;
 }
