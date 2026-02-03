@@ -37,7 +37,7 @@ body {
     align-items: center;
     width: 100%;
     height: 60px;
-    position: relative; /* Essential for absolute positioning of children */
+    position: relative;
 }
 
 .btn {
@@ -59,16 +59,12 @@ body {
     background-color: #ff3333;
 }
 
-/* Button Positioning: 
-   Using 51% pushes them very close to the center line.
-   margin-left/right adds the small gap between them.
-*/
-
+/* Button Positioning */
 #noBtn {
     position: absolute; 
     left: 51%; 
     margin-left: 10px;
-    transition: top 0.3s ease, left 0.3s ease; /* Slightly faster transition for "dodge" effect */
+    transition: top 0.3s ease, left 0.3s ease;
 }
 
 #yesBtn {
