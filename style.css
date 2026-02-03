@@ -24,11 +24,31 @@ body {
     margin-bottom: 20px;
 }
 
+/* Updated container to align flowers and giraffe */
+.gif_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Space between flowers and giraffe */
+    margin-bottom: 20px;
+}
+
 .gif_container img {
     width: 300px;
     border-radius: 15px;
-    margin-bottom: 20px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Style for the flowers */
+.flower {
+    font-size: 60px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); } /* Moves up slightly */
+    100% { transform: translateY(0px); }
 }
 
 .buttons {
@@ -59,12 +79,11 @@ body {
     background-color: #ff3333;
 }
 
-/* Button Positioning */
 #noBtn {
     position: absolute; 
     left: 51%; 
     margin-left: 10px;
-    transition: top 0.3s ease, left 0.3s ease;
+    transition: top 0.4s ease, left 0.4s ease;
 }
 
 #yesBtn {
