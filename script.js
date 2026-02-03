@@ -9,25 +9,18 @@ function moveButton() {
     const btnWidth = noBtn.offsetWidth;
     const btnHeight = noBtn.offsetHeight;
 
-    // Calculate random position
-    // We subtract button size to keep it inside the window
-    const randomX = Math.random() * (windowWidth - btnWidth);
-    const randomY = Math.random() * (windowHeight - btnHeight);
+    // Calculate random position but keep it within some padding
+    const randomX = Math.random() * (windowWidth - btnWidth - 40) + 20;
+    const randomY = Math.random() * (windowHeight - btnHeight - 40) + 20;
 
     // Apply new position
-    noBtn.style.position = 'fixed'; // Switch to fixed to move anywhere on screen
     noBtn.style.left = randomX + 'px';
     noBtn.style.top = randomY + 'px';
 }
 
 function nextPage() {
-    // Hide the question screen
     document.getElementById('question-screen').classList.add('hidden');
-    
-    // Show the success screen
     document.getElementById('success-screen').classList.remove('hidden');
-    
-    // Optional: Add simple confetti effect
     createConfetti();
 }
 
@@ -45,14 +38,13 @@ function createConfetti() {
         confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
         
         document.body.appendChild(confetti);
-        
-        // Add animation keyframes dynamically
-        const style = document.createElement('style');
-        style.innerHTML = `
-            @keyframes fall {
-                to { transform: translateY(100vh) rotate(360deg); }
-            }
-        `;
-        document.head.appendChild(style);
     }
+    
+    const style = document.createElement('style');
+    style.innerHTML = `
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(360deg); }
+        }
+    `;
+    document.head.appendChild(style);
 }
