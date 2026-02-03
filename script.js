@@ -1,38 +1,55 @@
+let isAnimating = false;
+
+document.addEventListener('mousemove', function(e) {
+    const noBtn = document.getElementById('noBtn');
+    
+    if (!noBtn || noBtn.offsetParent === null) return;
+
+    const rect = noBtn.getBoundingClientRect();
+    const btnCenterX = rect.left + rect.width / 2;
+    const btnCenterY = rect.top + rect.height / 2;
+
+    const distance = Math.sqrt(
+        Math.pow(e.clientX - btnCenterX, 2) + 
+        Math.pow(e.clientY - btnCenterY, 2)
+    );
+
+    if (distance < 100 && !isAnimating) {
+        moveButton();
+        isAnimating = true;
+        setTimeout(() => { isAnimating = false; }, 400);
+    }
+});
+
 function moveButton() {
     const noBtn = document.getElementById('noBtn');
     
-    // Get button dimensions
     const btnWidth = noBtn.offsetWidth;
     const btnHeight = noBtn.offsetHeight;
-
-    // Get window dimensions
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
 
-    // Get current position
     let currentX = noBtn.offsetLeft;
     let currentY = noBtn.offsetTop;
 
-    // Calculate a "Short Hop" (move between 100px and 300px away)
     const angle = Math.random() * 2 * Math.PI;
-    const distance = 150 + Math.random() * 150; 
+    const jumpDistance = 150 + Math.random() * 100;
 
-    let newX = currentX + Math.cos(angle) * distance;
-    let newY = currentY + Math.sin(angle) * distance;
+    let newX = currentX + Math.cos(angle) * jumpDistance;
+    let newY = currentY + Math.sin(angle) * jumpDistance;
 
-    // BOUNDARY CHECK: Ensure it stays ON screen
-    if (newX < 0) newX = 20;
-    if (newX > windowWidth - btnWidth) newX = windowWidth - btnWidth - 20;
+    const padding = 50;
+
+    if (newX < padding) newX = padding;
+    if (newX > windowWidth - btnWidth - padding) newX = windowWidth - btnWidth - padding;
     
-    if (newY < 0) newY = 20;
-    if (newY > windowHeight - btnHeight) newY = windowHeight - btnHeight - 20;
+    if (newY < padding) newY = padding;
+    if (newY > windowHeight - btnHeight - padding) newY = windowHeight - btnHeight - padding;
 
-    // Apply new position
     noBtn.style.position = 'absolute';
     noBtn.style.left = newX + 'px';
     noBtn.style.top = newY + 'px';
     
-    // Clear margins so the precise top/left positioning works
     noBtn.style.marginLeft = '0';
     noBtn.style.marginTop = '0';
 }
