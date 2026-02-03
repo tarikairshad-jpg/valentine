@@ -1,65 +1,33 @@
+const noBtn = document.getElementById("noBtn");
+const placeholder = document.querySelector(".placeholder");
+
 window.addEventListener("load", () => {
-    const noBtn = document.getElementById("noBtn");
-    const rect = noBtn.getBoundingClientRect();
-    noBtn.style.position = "fixed";
+    const rect = placeholder.getBoundingClientRect();
     noBtn.style.left = rect.left + "px";
     noBtn.style.top = rect.top + "px";
 });
 
 document.addEventListener("mousemove", (e) => {
-    const noBtn = document.getElementById("noBtn");
-    if (!noBtn) return;
-
     const rect = noBtn.getBoundingClientRect();
 
-    const btnX = rect.left + rect.width / 2;
-    const btnY = rect.top + rect.height / 2;
+    const dx = rect.left + rect.width / 2 - e.clientX;
+    const dy = rect.top + rect.height / 2 - e.clientY;
+    const dist = Math.hypot(dx, dy);
 
-    const dx = btnX - e.clientX;
-    const dy = btnY - e.clientY;
-    const distance = Math.hypot(dx, dy);
+    if (dist < 160) {
+        let x = rect.left + (dx / dist) * 20;
+        let y = rect.top + (dy / dist) * 20;
 
-    if (distance < 180) {
-        const move = 18;
+        const pad = 10;
+        x = Math.max(pad, Math.min(window.innerWidth - rect.width - pad, x));
+        y = Math.max(pad, Math.min(window.innerHeight - rect.height - pad, y));
 
-        let newX = rect.left + (dx / distance) * move;
-        let newY = rect.top + (dy / distance) * move;
-
-        const padding = 12;
-        newX = Math.max(padding, Math.min(window.innerWidth - rect.width - padding, newX));
-        newY = Math.max(padding, Math.min(window.innerHeight - rect.height - padding, newY));
-
-        noBtn.style.left = newX + "px";
-        noBtn.style.top = newY + "px";
+        noBtn.style.left = x + "px";
+        noBtn.style.top = y + "px";
     }
 });
 
 function nextPage() {
     document.getElementById("question-screen").classList.add("hidden");
     document.getElementById("success-screen").classList.remove("hidden");
-    createConfetti();
-}
-
-function createConfetti() {
-    const colors = ["#ff4d4d", "#ff9999", "#ffcccc"];
-
-    for (let i = 0; i < 50; i++) {
-        const confetti = document.createElement("div");
-        confetti.style.position = "fixed";
-        confetti.style.left = Math.random() * 100 + "vw";
-        confetti.style.top = "-10px";
-        confetti.style.width = "10px";
-        confetti.style.height = "10px";
-        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
-        document.body.appendChild(confetti);
-    }
-
-    const style = document.createElement("style");
-    style.innerHTML = `
-        @keyframes fall {
-            to { transform: translateY(100vh) rotate(360deg); }
-        }
-    `;
-    document.head.appendChild(style);
 }
