@@ -33,7 +33,7 @@ body {
 }
 
 .gif_container img {
-    width: 250px; /* Adjusted size for the new GIF */
+    width: 250px;
     border-radius: 15px;
 }
 
@@ -48,11 +48,13 @@ body {
     100% { transform: translateY(0); }
 }
 
+/* This container acts as the anchor */
 .buttons {
+    position: relative; 
+    width: 100%;
+    height: 60px; /* Essential: Gives buttons a space to live */
     display: flex;
     justify-content: center;
-    gap: 40px;
-    height: 60px; /* Reserve height so layout doesn't shift */
 }
 
 .btn {
@@ -64,7 +66,18 @@ body {
     border-radius: 50px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.15);
     cursor: pointer;
-    /* REMOVED TRANSITION HERE - This restores the fast movement */
+    /* NO TRANSITION: Ensures instant movement */
+}
+
+/* LOCK THE POSITIONS */
+#yesBtn {
+    position: absolute;
+    right: 52%; /* Pins it slightly to the left of center */
+}
+
+#noBtn {
+    position: absolute;
+    left: 52%; /* Pins it slightly to the right of center */
 }
 
 .details {
