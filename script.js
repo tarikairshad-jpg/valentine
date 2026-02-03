@@ -1,21 +1,42 @@
 function moveButton() {
     const noBtn = document.getElementById('noBtn');
     
-    // Get window dimensions
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight;
-    
     // Get button dimensions
     const btnWidth = noBtn.offsetWidth;
     const btnHeight = noBtn.offsetHeight;
 
-    // Calculate random position but keep it within some padding
-    const randomX = Math.random() * (windowWidth - btnWidth - 40) + 20;
-    const randomY = Math.random() * (windowHeight - btnHeight - 40) + 20;
+    // Get window dimensions
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+
+    // Get current position (or initial position if not moved yet)
+    let currentX = noBtn.offsetLeft;
+    let currentY = noBtn.offsetTop;
+
+    // Calculate a "Short Hop" (move between 100px and 300px away)
+    // We use a random angle to decide direction
+    const angle = Math.random() * 2 * Math.PI;
+    const distance = 150 + Math.random() * 150; // Jump between 150px and 300px
+
+    let newX = currentX + Math.cos(angle) * distance;
+    let newY = currentY + Math.sin(angle) * distance;
+
+    // BOUNDARY CHECK: Ensure it stays ON screen
+    // If it goes off left, set it to 10px. If off right, set to width - button - 10px
+    if (newX < 0) newX = 20;
+    if (newX > windowWidth - btnWidth) newX = windowWidth - btnWidth - 20;
+    
+    if (newY < 0) newY = 20;
+    if (newY > windowHeight - btnHeight) newY = windowHeight - btnHeight - 20;
 
     // Apply new position
-    noBtn.style.left = randomX + 'px';
-    noBtn.style.top = randomY + 'px';
+    noBtn.style.position = 'absolute'; // Ensure it's absolute
+    noBtn.style.left = newX + 'px';
+    noBtn.style.top = newY + 'px';
+    
+    // Clear margins so the precise top/left positioning works without offset
+    noBtn.style.marginLeft = '0';
+    noBtn.style.marginTop = '0';
 }
 
 function nextPage() {
