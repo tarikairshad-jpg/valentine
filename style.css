@@ -35,10 +35,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px;
-    margin-top: 20px;
     width: 100%;
-    height: 60px; /* Reserves space so layout doesn't jump */
+    height: 60px;
+    position: relative; /* Essential for absolute positioning of children */
 }
 
 .btn {
@@ -60,16 +59,22 @@ body {
     background-color: #ff3333;
 }
 
-/* MOVEMENT MAGIC: This makes the No button glide smoothly */
+/* Button Positioning: 
+   Using 51% pushes them very close to the center line.
+   margin-left/right adds the small gap between them.
+*/
+
 #noBtn {
     position: absolute; 
-    left: 55%; /* Start slightly to the right */
-    transition: top 0.4s ease, left 0.4s ease; 
+    left: 51%; 
+    margin-left: 10px;
+    transition: top 0.3s ease, left 0.3s ease; /* Slightly faster transition for "dodge" effect */
 }
 
 #yesBtn {
     position: absolute;
-    right: 55%; /* Start slightly to the left */
+    right: 51%;
+    margin-right: 10px;
 }
 
 .details {
